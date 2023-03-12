@@ -1,19 +1,22 @@
 // 예제 1
-function setDimension(name, value) {
-  if (name === 'height') {
-    this._height = value;
-    return;
-  }
-  if (name === 'width') {
-    this._width = value;
-    return;
-  }
+function setWidth(value) {
+  his._width = value;
+}
+function setHeight(value) {
+  his._height = value;
 }
 
 // 예제 2
 class Concert {
-  book(customer, isPremium) {}
+  regularBook(customer) {
+    this.#book();
+  }
+  premiumBook(customer) {
+    this.#book();
+  }
+  #book(customer, isPremium) {}
 }
 
 // 예제 3
-function setSwitch(on);
+function switchOn() {}
+function switchOff() {}
