@@ -1,12 +1,12 @@
-import { createStatement } from './create_statement.js';
+import { Statement } from './create_statement.js';
 
 export function statement(invoice, plays) {
-  const statement = createStatement(invoice, plays);
+  const statement = new Statement(invoice, plays);
   return renderPlainText(statement);
 }
 
 export function htmlStatement(invoice, plays) {
-  const statement = createStatement(invoice, plays);
+  const statement = new Statement(invoice, plays);
   return renderHTML(statement);
 }
 
