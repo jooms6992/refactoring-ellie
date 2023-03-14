@@ -1,7 +1,27 @@
 import { createStatement } from './create_statement.js';
+
 export function statement(invoice, plays) {
   const statement = createStatement(invoice, plays);
   return renderPlainText(statement);
+}
+
+export function htmlStatement(invoice, plays) {
+  const statement = createStatement(invoice, plays);
+  return renderHTML(statement);
+}
+
+function renderHTML(statement) {
+  let result = `<h1>청구 내역 (고객명: ${statement.customer})</h1>\n`;
+  result += '<table>\n';
+  result += '<tr><th>play</th><th>석</th><th>cost</th></tr>';
+  for (let perf of statement.performances) {
+    result += `  <tr><td>${perf.play.name}</td><td>${perf.audience}</td>`;
+    result += `<td>${usd(perf.amount / 100)}</td></tr>\n`;
+  }
+  result += '</table>\n';
+  result += `<p>총액: <em>${usd(statement.totalAmount / 100)}</em>점</p>\n`;
+  result += `<p>적립 포인트: <em>${statement.totalCredits}</em>점</p>\n`;
+  return result;
 }
 
 function renderPlainText(statement) {
@@ -53,6 +73,7 @@ const invoicesJSON = [
 ];
 
 const result = statement(invoicesJSON[0], playsJSON);
+// const result = htmlStatement(invoicesJSON[0], playsJSON);
 const expected =
   '청구 내역 (고객명: BigCo)\n' +
   '  Hamlet: $650.00 (55석)\n' +
@@ -60,5 +81,13 @@ const expected =
   '  Othello: $500.00 (40석)\n' +
   '총액: $1,730.00\n' +
   '적립 포인트: 47점\n';
+// const expected = `<h1>청구 내역 (고객명: BigCo)</h1>
+//       <table>
+//       <tr><th>play</th><th>석</th><th>cost</th></tr>  <tr><td>Hamlet</td><td>55</td><td>$650.00</td></tr>
+//         <tr><td>As You Like It</td><td>35</td><td>$580.00</td></tr>
+//         <tr><td>Othello</td><td>40</td><td>$500.00</td></tr>
+//       </table>
+//       <p>총액: <em>$1,730.00</em></p>
+//       <p>적립 포인트: <em>47</em>점</p>`;
 console.log(result);
 console.log(result === expected);
